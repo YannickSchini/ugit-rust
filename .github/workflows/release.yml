@@ -1,0 +1,62 @@
+name: Rust
+
+on:
+  push:
+    tags:
+    - "v*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: target/
+        key: ${{ matrix.os }}-release-${{ hashFiles('**/Cargo.lock') }}
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release --all-features
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}
+        path: target/
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: ubuntu-latest
+        path: ubuntu-latest
+    - uses: actions/download-artifact@v3
+      with:
+        name: windows-latest
+        path: windows-latest
+    - uses: actions/download-artifact@v3
+      with:
+        name: macos-latest
+        path: macos-latest
+    - run: zip --junk-paths ${{ github.event.repository.name }}-${{ github.ref_name }}-linux.zip ubuntu-latest/release/${{ github.event.repository.name }}
+    - run: zip --junk-paths ${{ github.event.repository.name }}-${{ github.ref_name }}-macos.zip macos-latest/release/${{ github.event.repository.name }}
+    - run: zip --junk-paths ${{ github.event.repository.name }}-${{ github.ref_name }}-windows.zip windows-latest/release/${{ github.event.repository.name }}.exe
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          ${{ github.event.repository.name }}-${{ github.ref_name }}-linux.zip
+          ${{ github.event.repository.name }}-${{ github.ref_name }}-macos.zip
+          ${{ github.event.repository.name }}-${{ github.ref_name }}-windows.zip
