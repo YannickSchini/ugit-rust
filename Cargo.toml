@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "3", features = ["derive"] }
+rust-crypto = "^0.2"
+thiserror = "1.0.31"
