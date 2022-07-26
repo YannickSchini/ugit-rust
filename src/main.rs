@@ -14,5 +14,4 @@ fn main() -> Result<(), std::io::Error> {
 
 fn init() -> Result<(), std::io::Error> {
     data::init()
-   
 }
