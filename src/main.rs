@@ -1,8 +1,9 @@
 mod options;
+mod data;
 
 use crate::options::{Options, Parser, SubCommand};
 
-fn main() {
+fn main() -> Result<(), std::io::Error> {
     let options = Options::parse();
 
     match options.sub_command {
@@ -11,6 +12,7 @@ fn main() {
     }
 }
 
-fn init() {
-    println!("Hello world")
+fn init() -> Result<(), std::io::Error> {
+    data::init()
+   
 }
