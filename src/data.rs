@@ -28,3 +28,7 @@ pub fn hash_file(file_name: PathBuf) -> Result<String> {
 
     Ok(sha1_identifier)
 }
+
+pub fn cat_file(oid: String) -> Result<()> {
+    Ok(())
+}
