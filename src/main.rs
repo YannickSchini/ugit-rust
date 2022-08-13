@@ -4,6 +4,7 @@ mod error;
 
 use data::hash_file;
 use data::cat_file;
+use data::init;
 
 use crate::options::{Options, Parser, SubCommand};
 use crate::error::Result;
@@ -18,8 +19,4 @@ fn main() -> Result<()> {
         None => {init()?;}
     };
     Ok(())
-}
-
-fn init() -> Result<()> {
-    data::init()
 }
