@@ -14,9 +14,15 @@ pub struct Options {
 pub enum SubCommand {
     Init,
     HashObject(HashObject),
+    CatFile(CatFile),
 }
 
 #[derive(Debug, Args)]
 pub struct HashObject {
     pub file_name: PathBuf,
+}
+
+#[derive(Debug, Args)]
+pub struct CatFile {
+    pub oid: String,
 }
