@@ -9,8 +9,7 @@ use crate::error::Result;
 static UGIT_DIR: &str = ".ugit";
 
 pub fn init() -> Result<()> {
-    fs::create_dir(UGIT_DIR)?;
-    fs::create_dir(format!("{}/objects", UGIT_DIR))?;
+    fs::create_dir_all(format!("{}/objects", UGIT_DIR))?;
 
     println!("ugit has been initialized.");
 
