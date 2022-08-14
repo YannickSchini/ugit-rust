@@ -11,10 +11,13 @@ static UGIT_DIR: &str = ".ugit";
 pub fn init() -> Result<()> {
     fs::create_dir(UGIT_DIR)?;
     fs::create_dir(format!("{}/objects", UGIT_DIR))?;
+
+    println!("ugit has been initialized.");
+
     Ok(())
 }
 
-pub fn hash_file(file_name: PathBuf) -> Result<String> {
+pub fn hash_file(file_name: PathBuf) -> Result<()> {
     let mut f = File::open(file_name)?;
     let mut buffer = String::new();
     f.read_to_string(&mut buffer)?;
@@ -28,7 +31,7 @@ pub fn hash_file(file_name: PathBuf) -> Result<String> {
 
     println!("{}", sha1_identifier);
 
-    Ok(sha1_identifier)
+    Ok(())
 }
 
 pub fn cat_file(oid: String) -> Result<()> {
@@ -37,5 +40,6 @@ pub fn cat_file(oid: String) -> Result<()> {
     f.read_to_string(&mut buffer)?;
 
     println!("{}", buffer);
+
     Ok(())
 }
